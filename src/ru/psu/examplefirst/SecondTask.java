@@ -4,6 +4,7 @@
  */
 package ru.psu.examplefirst;
 
+import java.util.LinkedList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -11,53 +12,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Asus
  */
-public class FirstExample extends javax.swing.JFrame {
+public class SecondTask extends javax.swing.JFrame {
 
     /**
      * Creates new form FirstExample
      */
-    public FirstExample() {
+    
+    LinkedList<RecIntegral> functionList;
+    
+    public SecondTask() {
         initComponents();
+        functionList = new LinkedList<>();
     }
 
-    //private double step;
-    
-    private static double Function(double x){
-        return java.lang.Math.sqrt(x);
-    }
-    
-    private static double Integral(double a, double b, double step){
-        int n = (int)((b - a) / step);
-        double sum = 0;
-        
-        for (int i = 0; i < n - 1; i++){
-            double x0 = a + i * step;
-            double x1 = a + (i + 1) * step;
-            sum += (Function(x0) + Function(x1)) * step / 2;
-        }
-        
-        double last = a + n * step;
-        if (last < b){
-            double lastTrapezoid = (Function(last) + Function(b)) * (b - last) / 2;
-            sum += lastTrapezoid;
-        }
-               
-        return sum;
-    }
-    
-//    private static double Integral(double a, double b, double step){
-//        //step = (b - a) / n; //step
-//        int n = (int)((b - a) / step);
-//        double sum = Function(a) + Function(b);
-//        
-//        for (int i = 0; i < n - 1; i++){
-//            sum += 2 * Function(a + i * step);
-//        }
-//        
-//        sum *= step / 2;
-//               
-//        return sum;
-//    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -82,6 +49,8 @@ public class FirstExample extends javax.swing.JFrame {
         btnPerform = new javax.swing.JButton();
         labelFunction = new javax.swing.JLabel();
         labelF = new javax.swing.JLabel();
+        btnClear = new javax.swing.JButton();
+        btnFill = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,6 +105,20 @@ public class FirstExample extends javax.swing.JFrame {
         labelF.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
         labelF.setText(" √x");
 
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
+        btnFill.setText("Fill");
+        btnFill.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFillActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelLayout = new javax.swing.GroupLayout(jPanel);
         jPanel.setLayout(jPanelLayout);
         jPanelLayout.setHorizontalGroup(
@@ -156,17 +139,21 @@ public class FirstExample extends javax.swing.JFrame {
                         .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtBot, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtTop, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtStep, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(135, 135, 135)
-                        .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnPerform, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)))
+                            .addComponent(txtStep, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelLayout.createSequentialGroup()
                         .addComponent(labelFunction)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(labelF, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(132, Short.MAX_VALUE))
+                .addGap(135, 135, 135)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAdd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDelete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnPerform, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFill, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanelLayout.setVerticalGroup(
             jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,12 +166,14 @@ public class FirstExample extends javax.swing.JFrame {
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtBot, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelBot)
-                    .addComponent(btnAdd))
+                    .addComponent(btnAdd)
+                    .addComponent(btnClear))
                 .addGap(27, 27, 27)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labelTop)
-                    .addComponent(btnDelete))
+                    .addComponent(btnDelete)
+                    .addComponent(btnFill))
                 .addGap(27, 27, 27)
                 .addGroup(jPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtStep, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,6 +202,13 @@ public class FirstExample extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)jTable.getModel();
         model.addRow(new Object[]{txtBot.getText(), txtTop.getText(), txtStep.getText()});
+        
+        functionList.add(new RecIntegral(
+                Double.parseDouble(txtBot.getText()), 
+                Double.parseDouble(txtTop.getText()), 
+                Double.parseDouble(txtStep.getText())
+        ));
+        
         txtBot.setText("");
         txtTop.setText("");
         txtStep.setText("");
@@ -224,6 +220,7 @@ public class FirstExample extends javax.swing.JFrame {
         try {
             int selectedRowID = jTable.getSelectedRow();
             model.removeRow(selectedRowID);
+            functionList.remove(selectedRowID);
         } catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
@@ -233,20 +230,40 @@ public class FirstExample extends javax.swing.JFrame {
     private void btnPerformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerformActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)jTable.getModel();
-        double a = 0;
-        double b = 0;
-        double step = 0;
+//        double botLimit, toplimit, step;
         double result;
+        int selectedRowID = jTable.getSelectedRow();
         
-        for (int i = 0; i < jTable.getRowCount(); i++){
-            a = Double.parseDouble(jTable.getValueAt(i, 0).toString());
-            b = Double.parseDouble(jTable.getValueAt(i, 1).toString());
-            step = Double.parseDouble(jTable.getValueAt(i, 2).toString());
+//        botLimit = Double.parseDouble(jTable.getValueAt(selectedRowID, 0).toString());
+//        toplimit = Double.parseDouble(jTable.getValueAt(selectedRowID, 1).toString());
+//        step = Double.parseDouble(jTable.getValueAt(selectedRowID, 2).toString());
             
-            result = Integral(a, b, step);
-            model.setValueAt(result, i, 3);
-        }
+        RecIntegral integral = functionList.get(selectedRowID);
+            
+        result = integral.Integral();
+        model.setValueAt(result, selectedRowID, 3);
+        
     }//GEN-LAST:event_btnPerformActionPerformed
+
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)jTable.getModel();
+        model.setRowCount(0);
+    }//GEN-LAST:event_btnClearActionPerformed
+
+    private void btnFillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFillActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)jTable.getModel();
+        Object[] data = new Object[4];
+        for (int i = 0; i < functionList.size(); i++){           
+            data[0] = functionList.get(i).getBotLimit();
+            data[1] = functionList.get(i).getTopLimit();
+            data[2] = functionList.get(i).getStep();
+            data[3] = functionList.get(i).getResult();
+            model.addRow(data);
+        }
+
+    }//GEN-LAST:event_btnFillActionPerformed
 
     /**
      * @param args the command line arguments
@@ -265,20 +282,21 @@ public class FirstExample extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FirstExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FirstExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FirstExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FirstExample.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FirstExample().setVisible(true);
+                new SecondTask().setVisible(true);
             }
         });
     }
@@ -286,7 +304,9 @@ public class FirstExample extends javax.swing.JFrame {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnFill;
     private javax.swing.JButton btnPerform;
     private javax.swing.JPanel jPanel;
     private javax.swing.JScrollPane jScrollPane1;
