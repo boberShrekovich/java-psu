@@ -230,18 +230,19 @@ public class SecondTask extends javax.swing.JFrame {
     private void btnPerformActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerformActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)jTable.getModel();
-//        double botLimit, toplimit, step;
+
         double result;
         int selectedRowID = jTable.getSelectedRow();
         
-//        botLimit = Double.parseDouble(jTable.getValueAt(selectedRowID, 0).toString());
-//        toplimit = Double.parseDouble(jTable.getValueAt(selectedRowID, 1).toString());
-//        step = Double.parseDouble(jTable.getValueAt(selectedRowID, 2).toString());
-            
         RecIntegral integral = functionList.get(selectedRowID);
-            
+        functionList.set(selectedRowID, integral).setBotLimit(Double.parseDouble(jTable.getValueAt(selectedRowID, 0).toString()));
+        functionList.set(selectedRowID, integral).setTopLimit(Double.parseDouble(jTable.getValueAt(selectedRowID, 1).toString()));
+        functionList.set(selectedRowID, integral).setStep(Double.parseDouble(jTable.getValueAt(selectedRowID, 2).toString()));
+
+       
         result = integral.Integral();
         model.setValueAt(result, selectedRowID, 3);
+        functionList.set(selectedRowID, integral).setResult(Double.parseDouble(jTable.getValueAt(selectedRowID, 3).toString()));
         
     }//GEN-LAST:event_btnPerformActionPerformed
 

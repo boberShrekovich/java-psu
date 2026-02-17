@@ -23,20 +23,20 @@ public class RecIntegral {
     }
 
     public double Integral(){
+        result = 0.0;
+        
         int n = (int)((topLimit - botLimit) / step);
+        double last = botLimit + n * step;
         
         for (int i = 0; i < n - 1; i++){
             double x0 = botLimit + i * step;
             double x1 = botLimit + (i + 1) * step;
             result += (Function(x0) + Function(x1)) * step / 2;
-        }
+        }      
+                
+        double x = (last < topLimit) ? ((Function(last) + Function(topLimit)) * (topLimit - last) / 2) : 0;
+        result += x;
         
-        double last = botLimit + n * step;
-        if (last < topLimit){
-            double lastTrapezoid = (Function(last) + Function(topLimit)) * (topLimit - last) / 2;
-            result += lastTrapezoid;
-        }
-               
         return result;
     }    
     
@@ -62,6 +62,10 @@ public class RecIntegral {
     
     public double getStep(){
         return step;
+    }
+    
+    public void setResult(double result){
+        this.result = result;
     }
     
     public double getResult(){
