@@ -29,6 +29,7 @@ public class FirstExample extends javax.swing.JFrame {
     private static double Integral(double a, double b, double step){
         int n = (int)((b - a) / step);
         double sum = 0;
+        double last = a + n * step;
         
         for (int i = 0; i < n - 1; i++){
             double x0 = a + i * step;
@@ -36,12 +37,9 @@ public class FirstExample extends javax.swing.JFrame {
             sum += (Function(x0) + Function(x1)) * step / 2;
         }
         
-        double last = a + n * step;
-        if (last < b){
-            double lastTrapezoid = (Function(last) + Function(b)) * (b - last) / 2;
-            sum += lastTrapezoid;
-        }
-               
+        double x = last < b ? (Function(last) + Function(b)) * (b - last) / 2 : 0;
+        sum += x;
+              
         return sum;
     }
     
