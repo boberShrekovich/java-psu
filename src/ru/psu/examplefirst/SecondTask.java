@@ -203,12 +203,21 @@ public class SecondTask extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel)jTable.getModel();
         model.addRow(new Object[]{txtBot.getText(), txtTop.getText(), txtStep.getText()});
         
-        functionList.add(new RecIntegral(
-                Double.parseDouble(txtBot.getText()), 
-                Double.parseDouble(txtTop.getText()), 
-                Double.parseDouble(txtStep.getText())
-        ));
-        
+        try {
+            functionList.add(new RecIntegral(
+                    Double.parseDouble(txtBot.getText()), 
+                    Double.parseDouble(txtTop.getText()), 
+                    Double.parseDouble(txtStep.getText())
+            ));
+        } catch (InvalidValueException e){
+            model.removeRow(model.getRowCount() - 1);
+            
+            txtBot.setText("");
+            txtTop.setText("");
+            txtStep.setText("");
+            
+            return;
+        }
         txtBot.setText("");
         txtTop.setText("");
         txtStep.setText("");

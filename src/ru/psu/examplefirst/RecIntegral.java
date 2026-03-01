@@ -8,10 +8,24 @@ package ru.psu.examplefirst;
  *
  * @author Asus
  */
-public class RecIntegral {
+public class RecIntegral{
     private double botLimit, topLimit, step, result;
     
-    public RecIntegral(double botLimit, double topLimit, double step){
+    public RecIntegral(double botLimit, double topLimit, double step) throws InvalidValueException {
+        if (botLimit < 0.000001 || botLimit > 1000000)
+            throw new InvalidValueException("The value of the bottom limit of the integral must be between 0.000001 and 1000000!!!");
+        
+        if (topLimit < 0.000001 || topLimit > 1000000)
+            throw new InvalidValueException("The value of the top limit of the integral must be between 0.000001 and 1000000!!!");
+        
+        if (step < 0.000001 || step > 1000000)
+            throw new InvalidValueException("The value of the step of the integral must be between 0.000001 and 1000000!!!");
+        
+        if (botLimit >= topLimit)
+            throw new InvalidValueException("The value of the bottom limit must not be greater than the top limit!!!");
+           
+        
+        
         this.botLimit = botLimit;
         this.topLimit = topLimit;
         this.step = step;
