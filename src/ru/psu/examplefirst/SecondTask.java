@@ -25,6 +25,7 @@ public class SecondTask extends javax.swing.JFrame {
         functionList = new LinkedList<>();
     }
 
+    boolean isClear = true;
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -201,26 +202,38 @@ public class SecondTask extends javax.swing.JFrame {
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)jTable.getModel();
-        model.addRow(new Object[]{txtBot.getText(), txtTop.getText(), txtStep.getText()});
+        
         
         try {
-            functionList.add(new RecIntegral(
-                    Double.parseDouble(txtBot.getText()), 
-                    Double.parseDouble(txtTop.getText()), 
-                    Double.parseDouble(txtStep.getText())
-            ));
+            
+            
+            if (isClear){
+                model.addRow(new Object[]{txtBot.getText(), txtTop.getText(), txtStep.getText()});
+                functionList.add(new RecIntegral(
+                        Double.parseDouble(txtBot.getText()), 
+                        Double.parseDouble(txtTop.getText()), 
+                        Double.parseDouble(txtStep.getText())
+                ));
+            } else {
+                JOptionPane.showMessageDialog(null, "Table is clear, you can't "
+                        + "entries until the button \'Fill\' has been clicked");
+            }
+            
+            
         } catch (InvalidValueException e){
+            JOptionPane.showMessageDialog(null, e.getMessage() + e.getNumber(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
             model.removeRow(model.getRowCount() - 1);
             
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Invalid Value", "ERROR!!!", JOptionPane.ERROR_MESSAGE);
+            model.removeRow(model.getRowCount() - 1);
+            
+        } finally {
             txtBot.setText("");
             txtTop.setText("");
             txtStep.setText("");
             
-            return;
         }
-        txtBot.setText("");
-        txtTop.setText("");
-        txtStep.setText("");
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -259,6 +272,7 @@ public class SecondTask extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)jTable.getModel();
         model.setRowCount(0);
+        isClear = false;
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnFillActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFillActionPerformed
@@ -272,7 +286,7 @@ public class SecondTask extends javax.swing.JFrame {
             data[3] = functionList.get(i).getResult();
             model.addRow(data);
         }
-
+          isClear = true;
     }//GEN-LAST:event_btnFillActionPerformed
 
     /**

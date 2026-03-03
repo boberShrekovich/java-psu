@@ -11,21 +11,27 @@ package ru.psu.examplefirst;
 public class RecIntegral{
     private double botLimit, topLimit, step, result;
     
-    public RecIntegral(double botLimit, double topLimit, double step) throws InvalidValueException {
+    public RecIntegral(double botLimit, double topLimit, double step) throws InvalidValueException {        
         if (botLimit < 0.000001 || botLimit > 1000000)
-            throw new InvalidValueException("The value of the bottom limit of the integral\n must be between 0.000001 and 1000000!!!");
+            throw new InvalidValueException("The value of the bottom limit of the integral\n must be between 0.000001 and 1000000!!!\n"
+                    + "You entered: ", (int) botLimit);
         
         if (topLimit < 0.000001 || topLimit > 1000000)
-            throw new InvalidValueException("The value of the top limit of the integral\n must be between 0.000001 and 1000000!!!");
+            throw new InvalidValueException("The value of the top limit of the integral\n must be between 0.000001 and 1000000!!!\n"
+                    + "You entered: ", (int) topLimit);
         
         if (step < 0.000001 || step > 1000000)
-            throw new InvalidValueException("The value of the step of the integral\n must be between 0.000001 and 1000000!!!");
+            throw new InvalidValueException("The value of the step of the integral\n must be between 0.000001 and 1000000!!!\n"
+                    + "You entered: ", (int) step);
         
         if (botLimit >= topLimit)
             throw new InvalidValueException("The value of the bottom limit must not be greater than the top limit!!!");
-           
         
+        if (step >= (topLimit - botLimit) / step)
+            throw new InvalidValueException("The value of the step limit must not be greater than integration limit!!!\n"
+                    + "You entered: ", (int) step);            
         
+                          
         this.botLimit = botLimit;
         this.topLimit = topLimit;
         this.step = step;
