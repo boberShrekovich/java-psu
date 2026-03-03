@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Asus
  */
-public class SecondTask extends javax.swing.JFrame {
+public class ThirdTask extends javax.swing.JFrame {
 
     /**
      * Creates new form FirstExample
@@ -20,7 +20,7 @@ public class SecondTask extends javax.swing.JFrame {
     
     LinkedList<RecIntegral> functionList;
     
-    public SecondTask() {
+    public ThirdTask() {
         initComponents();
         functionList = new LinkedList<>();
     }
@@ -306,21 +306,23 @@ public class SecondTask extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThirdTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThirdTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThirdTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SecondTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ThirdTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new SecondTask().setVisible(true);
+                new ThirdTask().setVisible(true);
             }
         });
     }
