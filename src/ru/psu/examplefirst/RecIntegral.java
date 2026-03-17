@@ -4,11 +4,15 @@
  */
 package ru.psu.examplefirst;
 
+import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.*;
+
 /**
  *
  * @author Asus
  */
-public class RecIntegral{
+public class RecIntegral implements Externalizable{
     private double botLimit, topLimit, step, result;
     
     public RecIntegral(double botLimit, double topLimit, double step) throws InvalidValueException {        
@@ -38,6 +42,18 @@ public class RecIntegral{
         this.result = 0.0;
     }
     
+    public RecIntegral(double botLimit, double topLimit, double step, double result) throws InvalidValueException {
+        if (result == 0.0)
+            throw new InvalidValueException("The result must not be null!!!");
+        
+        this.botLimit = botLimit;
+        this.topLimit = topLimit;
+        this.step = step;
+        this.result = result;
+    }
+    
+    public RecIntegral() {}
+    
     private static double Function(double x){
         return java.lang.Math.sqrt(x);
     }
@@ -59,6 +75,22 @@ public class RecIntegral{
         
         return result;
     }    
+    
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeDouble(this.botLimit);
+        out.writeDouble(this.topLimit);
+        out.writeDouble(this.step);
+        out.writeDouble(this.result);
+    }
+    
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        botLimit = in.readDouble();
+        topLimit = in.readDouble();
+        step = in.readDouble();
+        result = in.readDouble();
+    }
     
     public void setBotLimit(double botLimit){
         this.botLimit = botLimit;
