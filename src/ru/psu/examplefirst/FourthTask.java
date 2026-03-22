@@ -625,10 +625,10 @@ public class FourthTask extends javax.swing.JFrame {
                 RecIntegral[] integral = mapper.readValue(file, RecIntegral[].class);
                 
                 DefaultTableModel model = (DefaultTableModel)jTable.getModel();
-                if (model.getRowCount() != 0)
-                    throw new InvalidValueException("You cannot fill a table while it contains value!!!");
-                if (!isClear)
-                    throw new InvalidValueException("You cannot fill a table while it is cleared!!!");
+                
+                
+                model.setRowCount(0);
+                functionList.clear();
                 
                 for (RecIntegral rec : integral){
                     model.addRow(new Object[]{
@@ -637,16 +637,17 @@ public class FourthTask extends javax.swing.JFrame {
                         rec.getStep(),
                         rec.getResult()
                     });
+                    functionList.add(rec);
                 }
                 
-                               
+                                                        
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (InvalidValueException ex) {
-                JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-            }
+            } //catch (InvalidValueException ex) {
+              //  JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
+            //}
             
         }
         
