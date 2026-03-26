@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author Asus
  */
-public class FourthTask extends javax.swing.JFrame {
+public class FifthTask extends javax.swing.JFrame {
 
     /**
      * Creates new form FirstExample
@@ -28,7 +28,7 @@ public class FourthTask extends javax.swing.JFrame {
     
     LinkedList<RecIntegral> functionList;
     
-    public FourthTask() {
+    public FifthTask() {
         initComponents();
         functionList = new LinkedList<>();
     }
@@ -337,18 +337,60 @@ public class FourthTask extends javax.swing.JFrame {
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel)jTable.getModel();
 
-        double result;
+        //double result;
         int selectedRowID = jTable.getSelectedRow();
         
         RecIntegral integral = functionList.get(selectedRowID);
         functionList.set(selectedRowID, integral).setBotLimit(Double.parseDouble(jTable.getValueAt(selectedRowID, 0).toString()));
         functionList.set(selectedRowID, integral).setTopLimit(Double.parseDouble(jTable.getValueAt(selectedRowID, 1).toString()));
         functionList.set(selectedRowID, integral).setStep(Double.parseDouble(jTable.getValueAt(selectedRowID, 2).toString()));
+        
+        long startTime = System.nanoTime();
+        
+        
+        //result = integral.Integral();
+        double botLimit = integral.getBotLimit();
+        double topLimit = integral.getTopLimit();
+        double step = integral.getStep();
+        
+        int threadsCount = 6;
+        RecIntegralTH[] integrals = new RecIntegralTH[threadsCount];
+        Thread[] threads = new Thread[threadsCount];
+                
+        double range = (topLimit - botLimit) / threadsCount;
+        
+        try {
+            for (int i = 0; i < threadsCount; i++){
+                double start = botLimit + i * range;
+                double end = (i == threadsCount - 1) ? topLimit : start + range;
 
-       
-        result = integral.Integral();
-        model.setValueAt(result, selectedRowID, 3);
-        functionList.set(selectedRowID, integral).setResult(Double.parseDouble(jTable.getValueAt(selectedRowID, 3).toString()));
+                integrals[i] = new RecIntegralTH(start, end, step);
+                threads[i] = new Thread(integrals[i]);
+                threads[i].start();
+            }
+
+            double result = 0.0;
+            for (int i = 0; i < threadsCount; i++){
+                threads[i].join();
+                result += integrals[i].getResult();
+            }
+
+            model.setValueAt(result, selectedRowID, 3);
+            functionList.set(selectedRowID, integral).setResult(Double.parseDouble(jTable.getValueAt(selectedRowID, 3).toString()));
+            
+            
+            
+        } catch (InvalidValueException e){
+            JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
+        } catch (InterruptedException e) {
+            
+        }
+        
+
+        long endTime = System.nanoTime();
+        double raznica = (endTime - startTime) / 10000000.0;
+            
+        JOptionPane.showMessageDialog(null, "Time: " + raznica + " second");
         
     }//GEN-LAST:event_btnPerformActionPerformed
 
@@ -408,7 +450,7 @@ public class FourthTask extends javax.swing.JFrame {
                     file.delete();
                 JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
             } catch (IOException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             }  
             
         }
@@ -452,9 +494,9 @@ public class FourthTask extends javax.swing.JFrame {
                 
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "File not found!!!", "ERROR!!!", JOptionPane.ERROR_MESSAGE);
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvalidValueException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
             } 
@@ -494,9 +536,9 @@ public class FourthTask extends javax.swing.JFrame {
                 
                 
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (NumberFormatException | IOException ex){
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvalidValueException e) {
                 if (file.exists())
                     file.delete();
@@ -543,9 +585,9 @@ public class FourthTask extends javax.swing.JFrame {
                 }
                 
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException | IOException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvalidValueException ex) {
                 JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
             } 
@@ -592,13 +634,13 @@ public class FourthTask extends javax.swing.JFrame {
                 mapper.writeValue(file, list);
                 
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (InvalidValueException e){
                 if (file.exists())
                     file.delete();
                 JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
             } catch (IOException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }//GEN-LAST:event_menuSaveJSONActionPerformed
@@ -642,11 +684,13 @@ public class FourthTask extends javax.swing.JFrame {
                 
                                                         
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(FourthTask.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(FifthTask.class.getName()).log(Level.SEVERE, null, ex);
             } //catch (InvalidValueException ex) {
               //  JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
+            //} //catch (InvalidValueException ex) {
+              //  JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);//  JOptionPane.showMessageDialog(null, ex.getMessage(), "ERROR!!!", JOptionPane.ERROR_MESSAGE);
             //}
             
         }
@@ -670,14 +714,22 @@ public class FourthTask extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FourthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FifthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FourthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FifthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FourthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FifthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FourthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FifthTask.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -690,7 +742,7 @@ public class FourthTask extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FourthTask().setVisible(true);
+                new FifthTask().setVisible(true);
             }
         });
     }
